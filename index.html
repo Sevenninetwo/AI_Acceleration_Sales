@@ -22,7 +22,11 @@
     border-bottom: 1px solid #e5e7eb;
     max-width: 1400px;
     margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
   }
+  .header-left { max-width: 700px; }
   .header-eyebrow {
     font-size: 12px;
     font-weight: 600;
@@ -44,6 +48,47 @@
     color: #6b7280;
     line-height: 1.7;
     max-width: 640px;
+  }
+
+  .header-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin-left: 40px;
+  }
+  .brand-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #6366f1;
+    overflow: hidden;
+  }
+  .brand-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .brand-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .brand-title {
+    font-size: 11px;
+    color: #9ca3af;
+    text-align: center;
+    line-height: 1.3;
   }
 
   .controls {
@@ -174,10 +219,35 @@
     line-height: 1.5;
   }
 
-  .solution-text {
+  .solution-wrap { font-size: 14px; color: #4b5563; line-height: 1.75; }
+  .solution-name {
+    font-weight: 600;
+    color: #111827;
     font-size: 14px;
+    margin-bottom: 6px;
+  }
+  .solution-bullets {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .solution-bullets li {
+    padding-left: 16px;
+    position: relative;
+    margin-bottom: 4px;
+    font-size: 13px;
     color: #4b5563;
-    line-height: 1.75;
+    line-height: 1.65;
+  }
+  .solution-bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #d1d5db;
   }
 
   .stack-group { margin-bottom: 10px; }
@@ -231,9 +301,17 @@
 <body>
 
 <div class="header">
-  <div class="header-eyebrow">AI Acceleration Playbook</div>
-  <h1>Sales Workflows, Transformed by AI</h1>
-  <p class="header-sub">Practical tools and automations sorted by sales stage - from prospecting through pipeline management.</p>
+  <div class="header-left">
+    <div class="header-eyebrow">AI Acceleration Playbook</div>
+    <h1>Sales Workflows, Transformed by AI</h1>
+    <p class="header-sub">Practical tools and automations sorted by sales stage - from prospecting through pipeline management and leadership operations.</p>
+  </div>
+  <div class="header-brand">
+    <!-- Replace with <img src="AIA_Mktg_Profile.jpg"> if using same photo -->
+    <div class="brand-avatar"><img src="AIA_Mktg_Profile.jpg"></div>
+    <div class="brand-name">Francis Foo</div>
+    <div class="brand-title">AI Transformation &<br>GTM Leadership</div>
+  </div>
 </div>
 
 <div class="controls">
@@ -277,7 +355,17 @@
       <tr data-stage="prospect">
         <td><span class="fn-pill fn-prospect">Prospecting</span></td>
         <td><div class="problem-title">Reps can't get enough high-quality leads to fill the top of funnel</div></td>
-        <td><span class="solution-text">Stack Apollo.io for ICP-filtered lead discovery with Clay to enrich each contact (technographics, hiring signals, funding rounds) and auto-score them. Claude then writes hyper-personalised outreach for the top-scored leads. Reps only touch leads that are already warm and enriched.</span></td>
+        <td>
+          <div class="solution-wrap">
+            <div class="solution-name">Lead Generation Engine</div>
+            <ul class="solution-bullets">
+              <li>Apollo.io filters leads by ICP criteria (industry, headcount, tech stack, funding stage)</li>
+              <li>Clay enriches each contact with technographics, hiring signals, and funding rounds, then auto-scores them</li>
+              <li>Claude writes hyper-personalised outreach for the top-scored leads</li>
+              <li>Reps only touch leads that are already warm and enriched</li>
+            </ul>
+          </div>
+        </td>
         <td>
           <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span><span class="tag brain">Clay AI scoring</span></div>
           <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Apollo.io</span><span class="tag interface">Outreach / Salesloft</span></div>
@@ -295,7 +383,16 @@
       <tr data-stage="prospect">
         <td><span class="fn-pill fn-prospect">Prospecting</span></td>
         <td><div class="problem-title">Teams react to customer signals too late</div></td>
-        <td><span class="solution-text">Weekly signal digest - Claude scans news, LinkedIn job posts, and industry breach reports for trigger events per named account and pushes a ranked alert every Monday.</span></td>
+        <td>
+          <div class="solution-wrap">
+            <div class="solution-name">Weekly Signal Digest</div>
+            <ul class="solution-bullets">
+              <li>Claude scans news, LinkedIn job posts, and industry breach reports for trigger events per named account</li>
+              <li>Signals are ranked by relevance and urgency</li>
+              <li>Delivered to Slack or email every Monday before the first call</li>
+            </ul>
+          </div>
+        </td>
         <td>
           <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span><span class="tag brain">Perplexity</span></div>
           <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Slack</span><span class="tag interface">Email</span></div>
@@ -313,7 +410,16 @@
       <tr data-stage="planning">
         <td><span class="fn-pill fn-planning">Account Planning</span></td>
         <td><div class="problem-title">No one knows what's missing in each account</div></td>
-        <td><span class="solution-text">Whitespace mapper - export installed base to Sheets, run a Claude prompt to cross-reference each account against your full product list, and output a ranked "missing products" column per account.</span></td>
+        <td>
+          <div class="solution-wrap">
+            <div class="solution-name">Whitespace Mapper</div>
+            <ul class="solution-bullets">
+              <li>Export installed base to Google Sheets</li>
+              <li>Claude cross-references each account against the full product taxonomy</li>
+              <li>Outputs a ranked "missing products" column per account with expansion rationale</li>
+            </ul>
+          </div>
+        </td>
         <td>
           <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span></div>
           <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Google Sheets</span></div>
@@ -331,7 +437,16 @@
       <tr data-stage="planning">
         <td><span class="fn-pill fn-planning">Account Planning</span></td>
         <td><div class="problem-title">QBRs are backward-looking and underprepared</div></td>
-        <td><span class="solution-text">Pre-meeting brief generator - paste account name and recent notes into Claude. Outputs a 1-pager: key risks, expansion angles, exec talking points. Two minutes of input, leadership-ready output.</span></td>
+        <td>
+          <div class="solution-wrap">
+            <div class="solution-name">Pre-Meeting Brief Generator</div>
+            <ul class="solution-bullets">
+              <li>Paste account name and recent CRM notes into a structured Claude prompt</li>
+              <li>Claude outputs a 1-pager: key risks, expansion angles, and exec talking points</li>
+              <li>Two minutes of input, leadership-ready output</li>
+            </ul>
+          </div>
+        </td>
         <td>
           <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude.ai</span></div>
           <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Notion</span><span class="tag interface">Google Docs</span></div>
@@ -349,7 +464,16 @@
       <tr data-stage="discovery">
         <td><span class="fn-pill fn-discovery">Discovery</span></td>
         <td><div class="problem-title">Reps struggle to build multi-thread deal plans</div></td>
-        <td><span class="solution-text">Deal architecture prompt - rep fills a simple form: customer pain, current stack, stakeholders. Claude outputs a deal map showing which product solves which pain, who owns it, and the logical deal sequence.</span></td>
+        <td>
+          <div class="solution-wrap">
+            <div class="solution-name">Deal Architecture Prompt</div>
+            <ul class="solution-bullets">
+              <li>Rep fills a simple form: customer pain, current stack, key stakeholders</li>
+              <li>Claude outputs a deal map showing which product solves which pain and who owns each decision</li>
+              <li>Includes the logical deal sequence - what to sell first, what follows</li>
+            </ul>
+          </div>
+        </td>
         <td>
           <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude.ai</span></div>
           <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Notion</span><span class="tag interface">Google Docs</span></div>
@@ -367,7 +491,16 @@
       <tr data-stage="proposal">
         <td><span class="fn-pill fn-proposal">Proposal & Pitch</span></td>
         <td><div class="problem-title">Reps default to single-product pitches</div></td>
-        <td><span class="solution-text">Platform narrative generator - rep inputs 1-2 products already in the account. Claude generates a 3-sentence bridge to the full platform story, tailored to the customer's industry. No new deck needed.</span></td>
+        <td>
+          <div class="solution-wrap">
+            <div class="solution-name">Platform Narrative Generator</div>
+            <ul class="solution-bullets">
+              <li>Rep inputs 1-2 products already sold into the account</li>
+              <li>Claude generates a 3-sentence bridge to the full platform story, tailored to the customer's industry</li>
+              <li>No new deck needed - the narrative slots into existing conversations</li>
+            </ul>
+          </div>
+        </td>
         <td>
           <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude.ai</span></div>
           <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Google Slides</span><span class="tag interface">Email</span></div>
@@ -385,7 +518,16 @@
       <tr data-stage="pipeline">
         <td><span class="fn-pill fn-pipeline">Pipeline</span></td>
         <td><div class="problem-title">Reps don't know what to prioritize daily</div></td>
-        <td><span class="solution-text">Daily next-best-action brief - a scheduled prompt pulls open deals and recent call notes, then outputs 3 prioritized actions per rep. Delivered every morning before the first call.</span></td>
+        <td>
+          <div class="solution-wrap">
+            <div class="solution-name">Daily Next-Best-Action Brief</div>
+            <ul class="solution-bullets">
+              <li>A scheduled prompt pulls open deals and recent call notes from CRM</li>
+              <li>Claude outputs 3 prioritized actions per rep based on deal stage, recency, and risk</li>
+              <li>Delivered every morning via Slack or email before the first call</li>
+            </ul>
+          </div>
+        </td>
         <td>
           <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span></div>
           <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Slack</span><span class="tag interface">Email</span></div>
@@ -403,7 +545,16 @@
       <tr data-stage="pipeline">
         <td><span class="fn-pill fn-pipeline">Pipeline</span></td>
         <td><div class="problem-title">Unknown where deals stall and why</div></td>
-        <td><span class="solution-text">Stalled deal analyzer - weekly CRM export into a Claude prompt that flags deals stuck beyond average stage duration, identifies the most likely cause, and suggests one unblock move per deal.</span></td>
+        <td>
+          <div class="solution-wrap">
+            <div class="solution-name">Stalled Deal Analyzer</div>
+            <ul class="solution-bullets">
+              <li>Weekly CRM export fed into a Claude prompt that flags deals stuck beyond average stage duration</li>
+              <li>Claude identifies the most likely cause per deal (pricing, champion loss, competitor, internal blocker)</li>
+              <li>Suggests one specific unblock move per deal</li>
+            </ul>
+          </div>
+        </td>
         <td>
           <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span></div>
           <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Google Sheets</span><span class="tag interface">Slack</span></div>
@@ -421,7 +572,16 @@
       <tr data-stage="leadership">
         <td><span class="fn-pill fn-leadership">Leadership & Ops</span></td>
         <td><div class="problem-title">Blockers aren't tracked - they're just complained about</div></td>
-        <td><span class="solution-text">Blocker log with weekly summarizer - field leaders log friction in plain text. Claude categorizes by type, counts frequency, and drafts a monthly escalation brief for corporate with zero formatting effort.</span></td>
+        <td>
+          <div class="solution-wrap">
+            <div class="solution-name">Blocker Log with Weekly Summarizer</div>
+            <ul class="solution-bullets">
+              <li>Field leaders log friction in plain text via a Notion form</li>
+              <li>Claude categorizes each entry by type (pricing, legal, product gap, capacity)</li>
+              <li>Counts frequency and drafts a monthly escalation brief for corporate - data, not anecdotes</li>
+            </ul>
+          </div>
+        </td>
         <td>
           <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span></div>
           <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Notion</span><span class="tag interface">Email</span></div>
