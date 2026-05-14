@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales AI Acceleration Playbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #ffffff;
+    color: #1a1a2e;
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    padding: 56px 56px 44px;
+    border-bottom: 1px solid #e5e7eb;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .header-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #6366f1;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .header-sub {
+    font-size: 16px;
+    color: #6b7280;
+    line-height: 1.7;
+    max-width: 640px;
+  }
+
+  .controls {
+    padding: 24px 56px;
+    border-bottom: 1px solid #e5e7eb;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .filter-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+  .filter-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #9ca3af;
+    margin-right: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    color: #6b7280;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .filter-btn:hover { background: #f3f4f6; border-color: #d1d5db; color: #374151; }
+  .filter-btn .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .filter-btn.active { background: #111827; color: #ffffff; border-color: #111827; }
+  .filter-btn.active .dot { box-shadow: 0 0 0 2px rgba(255,255,255,0.4); }
+
+  .legend {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-label { font-size: 12px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 1px; margin-right: 4px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #6b7280; }
+
+  main {
+    padding: 0 56px 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .table-header {
+    display: flex;
+    align-items: center;
+    padding: 28px 0 16px;
+  }
+  .table-title {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #9ca3af;
+  }
+  .count-badge {
+    display: inline-block;
+    background: #f3f4f6;
+    color: #6b7280;
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 12px;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    text-align: left;
+    padding: 14px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    border-bottom: 2px solid #e5e7eb;
+    background: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  tbody tr { border-bottom: 1px solid #f3f4f6; transition: background 0.1s; }
+  tbody tr:hover { background: #f9fafb; }
+  tbody tr.hidden { display: none; }
+  tbody td { padding: 24px 20px; vertical-align: top; }
+
+  .fn-pill {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .fn-prospect   { background: #eef2ff; color: #4f46e5; }
+  .fn-planning   { background: #f5f3ff; color: #7c3aed; }
+  .fn-discovery  { background: #ecfdf5; color: #047857; }
+  .fn-proposal   { background: #fef2f2; color: #dc2626; }
+  .fn-pipeline   { background: #fffbeb; color: #b45309; }
+  .fn-leadership { background: #ecfeff; color: #0e7490; }
+
+  .problem-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.5;
+  }
+
+  .solution-text {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.75;
+  }
+
+  .stack-group { margin-bottom: 10px; }
+  .stack-group:last-child { margin-bottom: 0; }
+  .stack-cat {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: #9ca3af;
+    margin-bottom: 5px;
+  }
+  .tag {
+    display: inline-block;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 2px 4px 2px 0;
+    white-space: nowrap;
+  }
+  .tag.brain     { background: #eef2ff; color: #4338ca; }
+  .tag.interface { background: #ecfeff; color: #0e7490; }
+  .tag.connector { background: #ecfdf5; color: #047857; }
+  .tag.data      { background: #fffbeb; color: #92400e; }
+
+  .metrics-group { display: flex; flex-direction: column; gap: 12px; }
+  .metric-block { padding-left: 12px; border-left: 3px solid #e5e7eb; }
+  .metric-type {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .metric-type.efficiency { color: #059669; }
+  .metric-type.performance { color: #4f46e5; }
+  .metric-block strong {
+    display: block;
+    color: #111827;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 1px;
+  }
+  .metric-block span { color: #6b7280; font-size: 12px; }
+
+  .empty-state { display: none; text-align: center; padding: 80px; color: #9ca3af; font-size: 15px; }
+  .empty-state.visible { display: block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">AI Acceleration Playbook</div>
+  <h1>Sales Workflows, Transformed by AI</h1>
+  <p class="header-sub">Practical tools and automations sorted by sales stage - from prospecting through pipeline management. Built to ship, not theorise.</p>
+</div>
+
+<div class="controls">
+  <div class="filter-row">
+    <span class="filter-label">Stage</span>
+    <button class="filter-btn active" onclick="filterStage('all', this)">All</button>
+    <button class="filter-btn" onclick="filterStage('prospect', this)"><span class="dot" style="background:#4f46e5"></span>Prospecting</button>
+    <button class="filter-btn" onclick="filterStage('planning', this)"><span class="dot" style="background:#7c3aed"></span>Account Planning</button>
+    <button class="filter-btn" onclick="filterStage('discovery', this)"><span class="dot" style="background:#047857"></span>Discovery</button>
+    <button class="filter-btn" onclick="filterStage('proposal', this)"><span class="dot" style="background:#dc2626"></span>Proposal & Pitch</button>
+    <button class="filter-btn" onclick="filterStage('pipeline', this)"><span class="dot" style="background:#b45309"></span>Pipeline Management</button>
+    <button class="filter-btn" onclick="filterStage('leadership', this)"><span class="dot" style="background:#0e7490"></span>Leadership & Ops</button>
+  </div>
+  <div class="legend">
+    <span class="legend-label">Stack</span>
+    <div class="legend-item"><span class="tag brain">Brain</span> AI reasoning</div>
+    <div class="legend-item"><span class="tag interface">Interface</span> Output destination</div>
+    <div class="legend-item"><span class="tag connector">Connector</span> Automation glue</div>
+    <div class="legend-item"><span class="tag data">Data</span> Input source</div>
+  </div>
+</div>
+
+<main>
+  <div class="table-header">
+    <span class="table-title">Workflows</span>
+    <span class="count-badge" id="countBadge">9 workflows</span>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:11%">Stage</th>
+        <th style="width:17%">Problem</th>
+        <th style="width:27%">AI Solution</th>
+        <th style="width:25%">Tool Stack</th>
+        <th style="width:20%">Success Metrics</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+
+      <tr data-stage="prospect">
+        <td><span class="fn-pill fn-prospect">Prospecting</span></td>
+        <td><div class="problem-title">Reps can't get enough high-quality leads to fill the top of funnel</div></td>
+        <td><span class="solution-text">Stack Apollo.io for ICP-filtered lead discovery with Clay to enrich each contact (technographics, hiring signals, funding rounds) and auto-score them. Claude then writes hyper-personalised outreach for the top-scored leads. Reps only touch leads that are already warm and enriched.</span></td>
+        <td>
+          <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span><span class="tag brain">Clay AI scoring</span></div>
+          <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Apollo.io</span><span class="tag interface">Outreach / Salesloft</span></div>
+          <div class="stack-group"><div class="stack-cat">Connector</div><span class="tag connector">Zapier</span><span class="tag connector">Clay workflows</span></div>
+          <div class="stack-group"><div class="stack-cat">Data</div><span class="tag data">ICP definition</span><span class="tag data">Apollo lead export</span><span class="tag data">LinkedIn / Crunchbase</span></div>
+        </td>
+        <td>
+          <div class="metrics-group">
+            <div class="metric-block"><div class="metric-type efficiency">Efficiency</div><strong>MQL volume</strong><span>Qualified leads per rep per week</span></div>
+            <div class="metric-block"><div class="metric-type performance">Performance</div><strong>Lead-to-meeting rate</strong><span>% of enriched leads that book a call</span></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr data-stage="prospect">
+        <td><span class="fn-pill fn-prospect">Prospecting</span></td>
+        <td><div class="problem-title">Teams react to customer signals too late</div></td>
+        <td><span class="solution-text">Weekly signal digest - Claude scans news, LinkedIn job posts, and industry breach reports for trigger events per named account and pushes a ranked alert every Monday.</span></td>
+        <td>
+          <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span><span class="tag brain">Perplexity</span></div>
+          <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Slack</span><span class="tag interface">Email</span></div>
+          <div class="stack-group"><div class="stack-cat">Connector</div><span class="tag connector">Zapier</span></div>
+          <div class="stack-group"><div class="stack-cat">Data</div><span class="tag data">Named account list</span></div>
+        </td>
+        <td>
+          <div class="metrics-group">
+            <div class="metric-block"><div class="metric-type efficiency">Efficiency</div><strong>Signal-to-meeting rate</strong><span>% of alerts that generate a discovery call</span></div>
+            <div class="metric-block"><div class="metric-type performance">Performance</div><strong>Pipeline from signals</strong><span>$ created from triggered outreach</span></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr data-stage="planning">
+        <td><span class="fn-pill fn-planning">Account Planning</span></td>
+        <td><div class="problem-title">No one knows what's missing in each account</div></td>
+        <td><span class="solution-text">Whitespace mapper - export installed base to Sheets, run a Claude prompt to cross-reference each account against your full product list, and output a ranked "missing products" column per account.</span></td>
+        <td>
+          <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span></div>
+          <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Google Sheets</span></div>
+          <div class="stack-group"><div class="stack-cat">Connector</div><span class="tag connector">Zapier</span></div>
+          <div class="stack-group"><div class="stack-cat">Data</div><span class="tag data">Salesforce export</span><span class="tag data">Product taxonomy</span></div>
+        </td>
+        <td>
+          <div class="metrics-group">
+            <div class="metric-block"><div class="metric-type efficiency">Efficiency</div><strong>Whitespace coverage</strong><span>% of top accounts with a gap plan</span></div>
+            <div class="metric-block"><div class="metric-type performance">Performance</div><strong>Cross-sell pipeline</strong><span>$ value of whitespace opps opened</span></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr data-stage="planning">
+        <td><span class="fn-pill fn-planning">Account Planning</span></td>
+        <td><div class="problem-title">QBRs are backward-looking and underprepared</div></td>
+        <td><span class="solution-text">Pre-meeting brief generator - paste account name and recent notes into Claude. Outputs a 1-pager: key risks, expansion angles, exec talking points. Two minutes of input, leadership-ready output.</span></td>
+        <td>
+          <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude.ai</span></div>
+          <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Notion</span><span class="tag interface">Google Docs</span></div>
+          <div class="stack-group"><div class="stack-cat">Connector</div><span class="tag connector">Manual (to start)</span></div>
+          <div class="stack-group"><div class="stack-cat">Data</div><span class="tag data">CRM notes</span><span class="tag data">Account history</span></div>
+        </td>
+        <td>
+          <div class="metrics-group">
+            <div class="metric-block"><div class="metric-type efficiency">Efficiency</div><strong>Review quality score</strong><span>Leader-rated 1-5 post-session</span></div>
+            <div class="metric-block"><div class="metric-type performance">Performance</div><strong>Actions per review</strong><span>Avg clear next steps documented</span></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr data-stage="discovery">
+        <td><span class="fn-pill fn-discovery">Discovery</span></td>
+        <td><div class="problem-title">Reps struggle to build multi-thread deal plans</div></td>
+        <td><span class="solution-text">Deal architecture prompt - rep fills a simple form: customer pain, current stack, stakeholders. Claude outputs a deal map showing which product solves which pain, who owns it, and the logical deal sequence.</span></td>
+        <td>
+          <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude.ai</span></div>
+          <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Notion</span><span class="tag interface">Google Docs</span></div>
+          <div class="stack-group"><div class="stack-cat">Connector</div><span class="tag connector">Notion form</span></div>
+          <div class="stack-group"><div class="stack-cat">Data</div><span class="tag data">Rep input</span><span class="tag data">Product catalogue</span></div>
+        </td>
+        <td>
+          <div class="metrics-group">
+            <div class="metric-block"><div class="metric-type efficiency">Efficiency</div><strong>Multi-product deal rate</strong><span>% of deals with 2+ products</span></div>
+            <div class="metric-block"><div class="metric-type performance">Performance</div><strong>Deal cycle time</strong><span>Days from stage 2 to close</span></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr data-stage="proposal">
+        <td><span class="fn-pill fn-proposal">Proposal & Pitch</span></td>
+        <td><div class="problem-title">Reps default to single-product pitches</div></td>
+        <td><span class="solution-text">Platform narrative generator - rep inputs 1-2 products already in the account. Claude generates a 3-sentence bridge to the full platform story, tailored to the customer's industry. No new deck needed.</span></td>
+        <td>
+          <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude.ai</span></div>
+          <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Google Slides</span><span class="tag interface">Email</span></div>
+          <div class="stack-group"><div class="stack-cat">Connector</div><span class="tag connector">Simple web form</span></div>
+          <div class="stack-group"><div class="stack-cat">Data</div><span class="tag data">Installed base</span><span class="tag data">Industry profile</span></div>
+        </td>
+        <td>
+          <div class="metrics-group">
+            <div class="metric-block"><div class="metric-type efficiency">Efficiency</div><strong>Platform deal mix</strong><span>% of new deals tagged platform vs. point</span></div>
+            <div class="metric-block"><div class="metric-type performance">Performance</div><strong>ACV per deal</strong><span>Average contract value, monthly</span></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr data-stage="pipeline">
+        <td><span class="fn-pill fn-pipeline">Pipeline</span></td>
+        <td><div class="problem-title">Reps don't know what to prioritize daily</div></td>
+        <td><span class="solution-text">Daily next-best-action brief - a scheduled prompt pulls open deals and recent call notes, then outputs 3 prioritized actions per rep. Delivered every morning before the first call.</span></td>
+        <td>
+          <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span></div>
+          <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Slack</span><span class="tag interface">Email</span></div>
+          <div class="stack-group"><div class="stack-cat">Connector</div><span class="tag connector">Zapier</span></div>
+          <div class="stack-group"><div class="stack-cat">Data</div><span class="tag data">Salesforce export</span><span class="tag data">Call notes</span></div>
+        </td>
+        <td>
+          <div class="metrics-group">
+            <div class="metric-block"><div class="metric-type efficiency">Efficiency</div><strong>Pipeline velocity</strong><span>Days per stage, tracked weekly</span></div>
+            <div class="metric-block"><div class="metric-type performance">Performance</div><strong>Rep adoption rate</strong><span>% acting on the brief each week</span></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr data-stage="pipeline">
+        <td><span class="fn-pill fn-pipeline">Pipeline</span></td>
+        <td><div class="problem-title">Unknown where deals stall and why</div></td>
+        <td><span class="solution-text">Stalled deal analyzer - weekly CRM export into a Claude prompt that flags deals stuck beyond average stage duration, identifies the most likely cause, and suggests one unblock move per deal.</span></td>
+        <td>
+          <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span></div>
+          <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Google Sheets</span><span class="tag interface">Slack</span></div>
+          <div class="stack-group"><div class="stack-cat">Connector</div><span class="tag connector">Zapier</span></div>
+          <div class="stack-group"><div class="stack-cat">Data</div><span class="tag data">Salesforce export</span></div>
+        </td>
+        <td>
+          <div class="metrics-group">
+            <div class="metric-block"><div class="metric-type efficiency">Efficiency</div><strong>Stage duration</strong><span>Avg days per stage vs. prior quarter</span></div>
+            <div class="metric-block"><div class="metric-type performance">Performance</div><strong>Win rate</strong><span>% closed-won vs. total deals by stage</span></div>
+          </div>
+        </td>
+      </tr>
+
+      <tr data-stage="leadership">
+        <td><span class="fn-pill fn-leadership">Leadership & Ops</span></td>
+        <td><div class="problem-title">Blockers aren't tracked - they're just complained about</div></td>
+        <td><span class="solution-text">Blocker log with weekly summarizer - field leaders log friction in plain text. Claude categorizes by type, counts frequency, and drafts a monthly escalation brief for corporate with zero formatting effort.</span></td>
+        <td>
+          <div class="stack-group"><div class="stack-cat">Brain</div><span class="tag brain">Claude API</span></div>
+          <div class="stack-group"><div class="stack-cat">Interface</div><span class="tag interface">Notion</span><span class="tag interface">Email</span></div>
+          <div class="stack-group"><div class="stack-cat">Connector</div><span class="tag connector">Zapier</span></div>
+          <div class="stack-group"><div class="stack-cat">Data</div><span class="tag data">Leader field input</span></div>
+        </td>
+        <td>
+          <div class="metrics-group">
+            <div class="metric-block"><div class="metric-type efficiency">Efficiency</div><strong>Blocker resolution rate</strong><span>% of logged issues resolved in 30 days</span></div>
+            <div class="metric-block"><div class="metric-type performance">Performance</div><strong>Escalation response time</strong><span>Days from log to corporate acknowledgment</span></div>
+          </div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="empty-state" id="emptyState">No workflows match this filter.</div>
+</main>
+
+<script>
+  function filterStage(stage, clickedBtn) {
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    clickedBtn.classList.add('active');
+    const rows = document.querySelectorAll('#tableBody tr');
+    let visible = 0;
+    rows.forEach(row => {
+      const match = stage === 'all' || row.dataset.stage === stage;
+      row.classList.toggle('hidden', !match);
+      if (match) visible++;
+    });
+    document.getElementById('emptyState').classList.toggle('visible', visible === 0);
+    document.getElementById('countBadge').textContent = visible + (visible === 1 ? ' workflow' : ' workflows');
+  }
+</script>
+</body>
+</html>
